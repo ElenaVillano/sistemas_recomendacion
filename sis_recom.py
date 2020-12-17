@@ -12,7 +12,7 @@ def load_data():
     - Arreglo de nombres (id_pelicula)
     """
     
-    # ----------- Carga de datos para la matriz de raitings -------------------
+    # ----------- Carga de datos para la matriz de ratings -------------------
     links_small = pd.read_csv('links_small.csv')
     ratings_small = pd.read_csv('ratings_small.csv')
     
@@ -67,9 +67,10 @@ def load_data():
 
 def create_train_test(ratings):
     """
-    separar conjuntos de test y training
-    remueve 10 ratings de cada usuario
-    y lo asigma a cada conjunto del test
+    Separar conjuntos de test y training
+    remueve 10 ratings de cada usuario y lo asigna a cada conjunto del test
+    :param ratings: Dataframe de los ratings en matriz
+    :return train, test: Datasets partidos para entrenamiento y prueba
     """
     test = np.zeros(ratings.shape)
     train = ratings.copy()
@@ -86,7 +87,12 @@ def create_train_test(ratings):
 
 
 def fun_ECM(actual, predicted):
-    """Función de Error Cuadrático Medio"""
+    """
+    Función de Error Cuadrático Medio
+    :param actual: Valor real
+    :param predicted: Valor predicho
+    :return mean_error: Error cuadrático medio
+    """
     suma_error = 0.0
     # loop sobre todos los valores
     for i in range(len(actual)):
@@ -100,9 +106,15 @@ def fun_ECM(actual, predicted):
 
 def recomendaciones_id(Y, MCompleta, array_movies, bases_nombres_id, user, top=5):
     """
-    Regresa id de las peliculas reomendadas dado un usuario
-    Param: Recibe matriz con Nan, id del usurario y el top por default 5
-    Return: Arreglo de ids de las películas sugeridas
+    Regresa id de las películas reomendadas dado un usuario
+    :param Y: Recibe matriz con Nan/ceros
+    :param MCompleta: Matriz predicha
+    :param array_movies: arreglo de las películas
+    :param bases_nombres_id: los nombres de las películas con su id,
+    :param user: id del usuario
+    :param top: default 5 para obtener el top 5 de películas recomendadas.
+    :return recomendaciones: recomendaciones de películas que no ha calificado
+    :return recomendaciones_t: recomendaciones de películas (considerando las que ya calificó
     """
     
     # ------------------------------------ Para nuevas recomendaciones------------------------------
@@ -153,6 +165,7 @@ def recomendaciones_id(Y, MCompleta, array_movies, bases_nombres_id, user, top=5
 def desempenio_NDCG(ratings, user):
     """
     Evaluar el desempeño para un usuario
+    :param ratings: matriz a evaluar
     :param user: usuario a evaluar
     :return ndcg: normalized discounted cumulative gain
     """
@@ -170,10 +183,13 @@ def desempenio_NDCG(ratings, user):
     return ndcg
 
 def obtain_ndcg_all_users(ratings):
+    """
+    Obtener el normalized discounted cumulative gain para todos los usuarios en la matriz
+    :param ratings: Matriz a evaluar
+    :return ndcg: Diccionario de todos los desempeños de cada usuario
+    """
     ndcg = {}
     
     for user in ratings.index:
         ndcg.update({user:desempenio_NDCG(ratings, user)})
-        #ndcg[user] desempenio_NDCG(Y_0, id_user)
     return ndcg
-
