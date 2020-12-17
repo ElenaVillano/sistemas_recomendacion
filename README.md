@@ -37,7 +37,7 @@
 - ratings_small.csv
 - movies_metadata.csv
 
-2.- Abrir el notebook **el_bueno.ipynb** y ejecutar cada celda. En el notebook se ejecuta lo siguiente:
+2.- Abrir el notebook **el_bueno.ipynb** y ejecutar cada celda. En el notebook se encontrará lo siguiente:
 
 - Carga de datos usando la función ***load_data*** del paquete *sis_recom.py*, con la que obtenemos la matriz de usuarios, películas y *raitings* correspondientes (extraidos de los archivos *links_small.csv* y *ratings_small.csv*), un arreglo de nombres de las películas (que se extrae del archivo *movies_metadata.csv*) y un arreglo de asociación de posición del id de la película (para realizar las recomendaciones).
 - Se realiza la separación del *set* de entrenamiento y de prueba
@@ -45,6 +45,6 @@
 - Se gráfican los errores cuadráticos medios de cada iteración para ver el comportamiento del algoritmo.
 - Después de realiza el cross validation
 - En la parte de prueba del usuario se puede sustituir el ***id_user*** por otro id y obtener sus recomendaciones. En este caso sacamos 2 listas de recomendación. La primera incluye sólo las nuevas películas calificadas que el usuario no ha calificado (no ha visto las películas). Y el segundo saca la lista incluyendo las películas que ya vio (para comparar lo que calificó vs lo que se obtuvo)
-- También se puede sacar el desempeño NDCG para un suario en partícular y **el promedio de todos los usuarios.**
+- También se puede sacar el desempeño NDCG para un usuario en partícular y **el promedio de todos los usuarios.**
 
 
