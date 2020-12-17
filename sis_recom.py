@@ -98,3 +98,82 @@ def fun_ECM(actual, predicted):
     return (mean_error)
 
 
+def recomendaciones_id(Y, MCompleta, array_movies, bases_nombres_id, user, top=5):
+    """
+    Regresa id de las peliculas reomendadas dado un usuario
+    Param: Recibe matriz con Nan, id del usurario y el top por default 5
+    Return: Arreglo de ids de las películas sugeridas
+    """
+    
+    # ------------------------------------ Para nuevas recomendaciones------------------------------
+    # Se multiplica boleano con Y para poner en cero los ratings dados por el usuario
+    nvos = []
+    # Agregando índice
+    for i in range (len(MCompleta)):
+        # Se concatena el indice de la pélicula
+        nvos.append([array_movies[i],MCompleta[i]*(~Y[i].any())])
+    
+    # nvos es un arreglo se pasa a dataframe para mejor manejabilidad
+    nvos = pd.DataFrame(nvos)
+    # se colocan nombres a las columnas
+    nvos.columns = ['id_movie','rating_recom']
+    # se ordenan de forma descendente
+    nvos = nvos.sort_values(by=['rating_recom'], ascending=False)
+    # Borrando 0
+    nvos = nvos[(nvos[['rating_recom']] != 0).all(axis=1)]
+    # Obteniendo el top
+    recomendaciones = nvos['id_movie'].head(5).to_numpy()
+    
+    # ------------------------------------ Para recomendaciones incluyendo las existentes ----------
+    # Incluyendo los datos calificados
+    todos = []
+    # Agregando índice
+    for i in range (len(MCompleta)):
+        # Se concatena el indice de la pélicula
+        todos.append([array_movies[i], MCompleta[i]])
+    # todos es un arreglo se pasa a dataframe para mejor manejabilidad
+    todos = pd.DataFrame(todos)
+    # se colocan nombres a las columnas
+    todos.columns = ['id_movie','rating_recom']
+    # se ordenan de forma descendente
+    todos = todos.sort_values(by=['rating_recom'], ascending=False)
+    # Obteniendo el top
+    recomendaciones_t = todos['id_movie'].head(5).to_numpy()  
+    
+    # Por si se quiere imprimir desde aqui las recomendaciones
+    #print("Estás son las nuevas películas que te recomendamos usuario no. ", user)
+    #print(bases_nombres_id[bases_nombres_id['movieId'].isin(recomendaciones)][["movieId", "title"]])
+    
+    #print("Estás películas te pueden interesar usuario no. ", user)
+    #print(bases_nombres_id[bases_nombres_id['movieId'].isin(recomendaciones_t)][["movieId", "title"]])
+    
+    return recomendaciones, recomendaciones_t
+
+
+def desempenio_NDCG(ratings, user):
+    """
+    Evaluar el desempeño para un usuario
+    :param user: usuario a evaluar
+    :return ndcg: normalized discounted cumulative gain
+    """
+    
+    rating_1 = ratings.loc[user]
+    rating_user = rating_1[rating_1!=0]
+    suma_dcg = 0
+    suma_idcg = 0
+    for i in range(0, len(rating_user)):
+        suma_dcg += rating_user[i] / np.log2(i+1 + 1)
+        suma_idcg += (pow(2,rating_user[i]) - 1) / np.log2(i+1 + 1)
+
+    ndcg = round(suma_dcg / suma_idcg,2)
+    
+    return ndcg
+
+def obtain_ndcg_all_users(ratings):
+    ndcg = {}
+    
+    for user in ratings.index:
+        ndcg.update({user:desempenio_NDCG(ratings, user)})
+        #ndcg[user] desempenio_NDCG(Y_0, id_user)
+    return ndcg
+
