@@ -162,34 +162,30 @@ def recomendaciones_id(Y, MCompleta, array_movies, bases_nombres_id, user, top=5
     return recomendaciones, recomendaciones_t
 
 
-def desempenio_NDCG(ratings, user):
+def desempenio_NDCG(rating_1):
     """
     Evaluar el desempeño para un usuario
-    :param ratings: matriz a evaluar
-    :param user: usuario a evaluar
+    :param user: fila del usuario a evaluar
     :return ndcg: normalized discounted cumulative gain
     """
     
-    rating_1 = ratings.loc[user]
-    rating_user = rating_1[rating_1!=0]
+    rating_user = np.array(rating_1)
+    rating_user_ord = np.sort(rating_user)[::-1]
+    
     suma_dcg = 0
     suma_idcg = 0
-    for i in range(0, len(rating_user)):
+    
+    for i in range(len(rating_user)):
         suma_dcg += rating_user[i] / np.log2(i+1 + 1)
-        suma_idcg += (pow(2,rating_user[i]) - 1) / np.log2(i+1 + 1)
-
+        suma_idcg += rating_user_ord[i] / np.log2(i+1 + 1)
+    
     ndcg = round(suma_dcg / suma_idcg,2)
     
     return ndcg
 
 def obtain_ndcg_all_users(ratings):
-    """
-    Obtener el normalized discounted cumulative gain para todos los usuarios en la matriz
-    :param ratings: Matriz a evaluar
-    :return ndcg: Diccionario de todos los desempeños de cada usuario
-    """
-    ndcg = {}
-    
+    ndcg = {}    
     for user in ratings.index:
-        ndcg.update({user:desempenio_NDCG(ratings, user)})
+        ndcg.update({user:desempenio_NDCG(ratings.loc[user])})
+        
     return ndcg
