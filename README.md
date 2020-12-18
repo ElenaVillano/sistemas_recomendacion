@@ -49,18 +49,18 @@ Para correr con **jupyter notebook**
 
 1.- Abrir el notebook **sistema_recomendacion.ipynb** y ejecutar cada celda. En el notebook se encontrará lo siguiente:
 
-- Carga de datos usando la función ***load_data*** del paquete *sis_recom.py*, con la que obtenemos la matriz de usuarios, películas y *raitings* correspondientes (extraidos de los archivos *links_small.csv* y *ratings_small.csv*), un arreglo de nombres de las películas (que se extrae del archivo *movies_metadata.csv*) y un arreglo de asociación de posición del id de la película (para realizar las recomendaciones).
+- Carga de datos usando la función ***load_data*** del paquete ***sis_recom.py***, con la que obtenemos la matriz de usuarios, películas y *raitings* correspondientes (extraidos de los archivos *links_small.csv* y *ratings_small.csv*), un arreglo de nombres de las películas (que se extrae del archivo *movies_metadata.csv*) y un arreglo de asociación de posición del id de la película (para realizar las recomendaciones).
 - Se realiza la separación del *set* de entrenamiento y de prueba
 - Se manda llamar a la clase *Matrix_Factorization* que es la que se encarga de la factorización de matrices (U y V)
 - Se gráfican los errores cuadráticos medios de cada iteración para ver el comportamiento del algoritmo.
-- Después de realiza el cross validation
+- Después se busca la K óptima
 - En la parte de prueba del usuario se puede sustituir el ***id_user*** por otro id y obtener sus recomendaciones. En este caso sacamos 2 listas de recomendación. La primera incluye sólo las nuevas películas calificadas que el usuario no ha calificado (no ha visto las películas). Y el segundo saca la lista incluyendo las películas que ya vio (para comparar lo que calificó vs lo que se obtuvo)
-- También se puede sacar el desempeño NDCG para un usuario en partícular y **el promedio de todos los usuarios.**
+- También se puede sacar el desempeño NDCG para un usuario en partícular y finalmente se muestra el promedio de esta métrica de todos los usuarios.
 
 
 Para correr en **consola**
 
-1. Abrir terminal, posicionarse en el repositorio donde se encuentren los archivos .py y ejectuar:
+1. Abrir terminal, posicionarse en el repositorio donde se encuentren los archivos .py y ejecutar:
 
 `recomiendame --help`
 
@@ -70,7 +70,7 @@ Este comando te dará información sobre las opciones con las que puede correr e
 
 `recomiendame --usuario 2`
 
-Este comando cargará la matriz que se predijo durante nuestro entrenamiento con k=671 y desplegará las recomendaciones para el usuario 2.
+Este comando cargará la matriz que se predijo durante nuestro entrenamiento con k=36 y desplegará las recomendaciones para el usuario 2.
 
 3. Ejecutar
 
