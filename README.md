@@ -1,13 +1,10 @@
-# Proyecto_Final_ML
-# Proyecto Final de Machine Learning
+# Sistemas de Recomendación con algoritmo de filtrado colaborativo
 
-**Integrantes del equipo 07**
+**Autor@s**
 
-| Nombre | Clave |
-| :------- | :------: |
-|Elena Villalobos Nolasco|000197730|
-|Carolina Acosta Tovany|000197627|
-|Aide Jazmín González Cruz|000197900|
+- Aide Jazmín González Cruz (@AideJGC)
+- Carolina Acosta Tovany (@caroacostatovany)
+- Elena Villalobos Nolasco (@ElenaVillano)
 
 ### Descripción
 
